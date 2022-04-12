@@ -1,0 +1,116 @@
+// Initial main app scaffold
+
+import 'package:flutter/material.dart';
+
+void main() {
+    runApp(
+        MaterialApp(
+            title: 'FriendlyChat',
+            home: Scaffold(
+                appBar: AppBar(
+                    title: const Text('FriendlyChat'),
+                ),
+            ),
+        ),
+    );
+}
+
+Break the simple app into two different subclasses of widget: a root-level FriendlyChatApp widget
+that never changes and a child ChatScreen widget that rebuilds when messages are sent and internal
+state changes.
+
+Create the FriendlyChatApp Stateless widget:
+* Inside main(), place the cursor in front of the M in MaterialApp.
+* Right-click, and select Refactor > Extract > Extract Flutter widget.
+* Enter FriendlyChatApp into the ExtractWidget dialog, and click the Refactor button.
+* The MaterialApp code is placed in a new stateless widget called FriendlyChatApp, and main() is
+updated to call that class when it calls the runApp() function.
+
+Replace the scaffold inside home: with ChatScreen class
+
+@override is a Dart annotation that indicates that the tagged method overrides a superclass's method.
+
+Simplifying the main() method enables hot reload because hot reload doesn't rerun main().
+
+A stateful widget - a widget that has mutable (changeable) state.
+State is information that can be read synchronously when the widget is built
+and might change during the lifetime of the widget.
+TextField - a StatefulWidget with properties for customizing the behavior of the input field.
+
+Select ChatScreen in the line class ChatScreen extends StatelessWidget.
+Press Option+Return (macOS) or Alt+Enter (Linux and Windows) to bring up a menu.
+From the menu, select Convert to StatefulWidget.
+The class is automatically updated with the boilerplate code for a stateful widget
+including a new _ChatScreenState class for managing state.
+
+Prefixing an identifier with an underscore (_) makes the identifier private to its library.
+
+To manage interactions with the text field, you use a TextEditingController object for reading
+the contents of the input field and for clearing the field after the chat message is sent.
+
+Stateful data for a widget is encapsulated in a State object.
+The State object is then associated with a widget that extends the StatefulWidget class.
+
+Libraries and visibility
+The import and library directives can help you create a modular and shareable code base. Libraries
+not only provide APIs, but are a unit of privacy: identifiers that start with an underscore (_)
+are visible only inside the library. Every Dart app is a library, even if it doesn’t use a library directive.
+
+Dart uses underscores instead of access modifier keywords like public or private
+Use import to specify how a namespace from one library is used in the scope of another library.
+Libraries can be distributed using packages.
+The package: scheme specifies libraries provided by a package manager such as the pub tool. For example:
+import 'package:test/test.dart';
+
+Lazily loading a library
+Deferred loading (also called lazy loading) allows a web app to load a library on demand,
+if and when the library is needed. Here are some cases when you might use deferred loading:
+* To reduce a web app’s initial startup time.
+* To perform A/B testing—trying out alternative implementations of an algorithm, for example.
+* To load rarely used functionality, such as optional screens and dialogs.
+
+To lazily load a library, you must first import it using deferred as.
+       import 'package:greetings/hello.dart' deferred as hello;
+When you need the library, invoke loadLibrary() using the library’s identifier.
+Future<void> greet() async {
+  await hello.loadLibrary();
+  hello.printGreeting();
+}
+You can invoke loadLibrary() multiple times on a library without problems. The library is loaded only once.
+
+Functions that return Future or Stream objects are asynchronous: they return after setting up a
+possibly time-consuming operation (such as I/O), without waiting for that operation to complete.
+Code that uses async and await is asynchronous
+Although an async function might perform time-consuming operations, it doesn’t wait for those operations.
+Instead, the async function executes only until it encounters its first await expression.
+Then it returns a Future object, resuming execution only after the await expression completes.
+
+The Future object indicates a promise to return an object.
+The value of 'await expression' is that returned object.
+The await expression makes execution pause until that object is available.
+In await expression, the value of expression is usually a Future; if it isn’t, then the value is
+automatically wrapped in a Future.
+
+If you get a compile-time error when using await, make sure await is in an async function.
+Adding the async keyword to a function makes it return a Future.
+void main() async {
+  checkVersion();
+  print('In main: version is ${await lookUpVersion()}');
+}
+
+consider this synchronous function, which returns a String:
+String lookUpVersion() => '1.0.0';
+
+If you change it to be an async function—for example, because a future implementation will be
+time consuming—the returned value is a Future:
+Future<String> lookUpVersion() async => '1.0.0';
+
+Use try, catch, and finally to handle errors and cleanup in code that uses await:
+try {
+  version = await lookUpVersion();
+} catch (e) {
+  // React to inability to look up the version
+}
+
+Formatting code
+Right-click in the code pane, and select Reformat Code with dartfmt.
